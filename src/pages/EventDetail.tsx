@@ -2,15 +2,13 @@ import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { Calendar, MapPin, Clock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { upcomingEvents, pastEvents } from "@/data/events"; // Import event data
-
-const allEvents = [...upcomingEvents, ...pastEvents];
+import { upcomingEvents, pastEvents } from "@/data/events";
+import { Event } from "@/types/events";
 
 const EventDetail = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
 
-  // Combine all events from both upcoming and past events
   const allEvents: Event[] = [...upcomingEvents, ...pastEvents];
   const event = allEvents.find(e => e.id === eventId);
 
@@ -30,9 +28,8 @@ const EventDetail = () => {
 
   const isUpcoming = Date.parse(event.date) > Date.now();
 
-  // Fix duplicate "/Events/Events/" issue
   const getImagePath = () => {
-    return `/Events/${event.image.replace(/^Events\//, '')}`; // Ensure "/Events/" is only once
+    return `/Events/${event.image.replace(/^Events\//, '')}`;
   };
 
   return (
@@ -50,7 +47,7 @@ const EventDetail = () => {
 
         <div className="relative rounded-xl overflow-hidden mb-8">
           <img
-            src={getImagePath()} // Corrected image path
+            src={getImagePath()}
             alt={event.title}
             className="w-full aspect-video object-cover"
           />
@@ -82,7 +79,7 @@ const EventDetail = () => {
           {isUpcoming && event.registerLink && (
             <a href={event.registerLink} target="_blank" rel="noopener noreferrer">
               <Button className="w-full md:w-auto">Register Now</Button>
-          </a>
+            </a>
           )}
 
           <div className="prose prose-lg max-w-none">
